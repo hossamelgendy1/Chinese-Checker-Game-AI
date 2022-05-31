@@ -1,5 +1,4 @@
 class State {
     Character[][] board;
-    State parent;
-    int utility;
+    int utility, alpha = Integer.MIN_VALUE, beta = Integer.MAX_VALUE;
 }
