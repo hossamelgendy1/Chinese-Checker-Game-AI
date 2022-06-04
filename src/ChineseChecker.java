@@ -5,6 +5,7 @@ public class ChineseChecker {
 
     private State currentState;
     private State startState;
+    private int level;
 
     public ChineseChecker() {
         currentState = new State();
@@ -80,7 +81,7 @@ public class ChineseChecker {
         }
     }
 
-    public ArrayList<State> allMoves(int player, State state) {
+    private ArrayList<State> allMoves(int player, State state) {
         ArrayList<State> moves = new ArrayList<State>();
         for (int i = 0; i < 17; i++) {
             for (int j = 0; j < 17; j++) {
@@ -118,126 +119,117 @@ public class ChineseChecker {
         return moves;
     }
 
-    public boolean isValid(State state,int i, int j, int newI, int newJ) {
-        //check if the new position is inside the board
+    private boolean isValid(State state, int i, int j, int newI, int newJ) {
+        // check if the new position is inside the board
         if (newI < 0 || newI > 16 || newJ < 0 || newJ > 16) {
             return false;
         }
-        //check if the new position is empty
+        // check if the new position is empty
         if (state.board[newI][newJ] != '*')
             return false;
-        //check if the marble is not moving to a triangle other than the goal
+        // check if the marble is not moving to a triangle other than the goal
         char color = state.board[i][j];
         if (color == 'o') {
             if (startState.board[newI][newJ] == 'o' || startState.board[newI][newJ] == 'b'
                     || startState.board[newI][newJ] == '*') {
                 return true;
-            }
-            else
+            } else
                 return false;
         } else if (color == 'r') {
-            if (startState.board[newI][newJ] == 'r' || startState.board[newI][newJ] == 'g' 
+            if (startState.board[newI][newJ] == 'r' || startState.board[newI][newJ] == 'g'
                     || startState.board[newI][newJ] == '*') {
                 return true;
-            }
-            else
+            } else
                 return false;
         } else if (color == 'y') {
             if (startState.board[newI][newJ] == 'y' || startState.board[newI][newJ] == 'p'
                     || startState.board[newI][newJ] == '*') {
                 return true;
-            }
-            else
+            } else
                 return false;
 
         } else if (color == 'g') {
             if (startState.board[newI][newJ] == 'g' || startState.board[newI][newJ] == 'r'
                     || startState.board[newI][newJ] == '*') {
                 return true;
-            }
-            else
+            } else
                 return false;
 
         } else if (color == 'b') {
             if (startState.board[newI][newJ] == 'b' || startState.board[newI][newJ] == 'o'
                     || startState.board[newI][newJ] == '*') {
                 return true;
-            }
-            else
+            } else
                 return false;
 
         } else if (color == 'p') {
             if (startState.board[newI][newJ] == 'p' || startState.board[newI][newJ] == 'y'
                     || startState.board[newI][newJ] == '*') {
                 return true;
-            }
-            else
+            } else
                 return false;
 
         }
-        return false; //should never reach here
+        return false; // should never reach here
     }
 
     private boolean isPossibleMove(State state, int i, int j, int newI, int newJ) {
         boolean isPossible = false;
-        //normal moves
+        // normal moves
         if ((newI == i && newJ == j + 1) || (newI == i && newJ == j - 1) || (newI == i + 1 && newJ == j)
-                || (newI == i + 1 && newJ == j-1) || (newI == i - 1 && newJ == j) 
+                || (newI == i + 1 && newJ == j - 1) || (newI == i - 1 && newJ == j)
                 || (newI == i - 1 && newJ == j + 1)) {
             isPossible = true;
-        } else { //jumps
-            if ((newI == i && newJ == j + 2 && state.board[i][j+1] != '*') 
-                    || (newI == i && newJ == j - 2 && state.board[i][j-1] != '*')
-                    || (newI == i + 2 && newJ == j && state.board[i+1][j] != '*') 
-                    || (newI == i + 2 && newJ == j - 2 && state.board[i+1][j-1] != '*')
-                    || (newI == i - 2 && newJ == j && state.board[i-1][j] != '*')
-                    || (newI == i - 2 && newJ == j + 2 && state.board[i-1][j+1] != '*')) {
+        } else { // jumps
+            if ((newI == i && newJ == j + 2 && state.board[i][j + 1] != '*')
+                    || (newI == i && newJ == j - 2 && state.board[i][j - 1] != '*')
+                    || (newI == i + 2 && newJ == j && state.board[i + 1][j] != '*')
+                    || (newI == i + 2 && newJ == j - 2 && state.board[i + 1][j - 1] != '*')
+                    || (newI == i - 2 && newJ == j && state.board[i - 1][j] != '*')
+                    || (newI == i - 2 && newJ == j + 2 && state.board[i - 1][j + 1] != '*')) {
                 isPossible = true;
             }
         }
         return isPossible;
     }
 
-    public boolean playerValidMove(State state,int i, int j, int newI, int newJ) {
-        //check if the coordinates are inside the board
+    private boolean playerValidMove(State state, int i, int j, int newI, int newJ) {
+        // check if the coordinates are inside the board
         if (newI < 0 || newI > 16 || newJ < 0 || newJ > 16 || i < 0 || i > 16 || j < 0 || j > 16) {
             return false;
         }
-        //check if the new position is empty
+        // check if the new position is empty
         if (state.board[newI][newJ] != '*')
             return false;
-        //check that the marble to move is valid
+        // check that the marble to move is valid
         if (state.board[i][j] != 'g' && state.board[i][j] != 'b' && state.board[i][j] != 'p')
             return false;
-        //check if the move is possible
+        // check if the move is possible
         if (!isPossibleMove(state, i, j, newI, newJ)) {
             return false;
         }
-        //check if the marble is not moving to a triangle other than the goal
+        // check if the marble is not moving to a triangle other than the goal
         char color = state.board[i][j];
         if (color == 'g') {
             if (startState.board[newI][newJ] == 'g' || startState.board[newI][newJ] == 'r'
                     || startState.board[newI][newJ] == '*') {
                 return true;
-            }
-            else
+            } else
                 return false;
         } else if (color == 'b') {
             if (startState.board[newI][newJ] == 'b' || startState.board[newI][newJ] == 'o'
                     || startState.board[newI][newJ] == '*') {
                 return true;
-            }
-            else
+            } else
                 return false;
         } else if (color == 'p') {
             if (startState.board[newI][newJ] == 'p' || startState.board[newI][newJ] == 'y'
                     || startState.board[newI][newJ] == '*') {
                 return true;
-            }
-            else
+            } else
                 return false;
         }
-        return false; //should never reach here
+        return false; // should never reach here
     }
 
     private boolean canMoveMarble(State state, int row, int col) {
@@ -431,7 +423,7 @@ public class ChineseChecker {
         }
     }
 
-    public ArrayList<State> getPossibleMoves(State state, int i, int j) {
+    private ArrayList<State> getPossibleMoves(State state, int i, int j) {
         ArrayList<State> moves = new ArrayList<>();
         // normal moves
         if (isValid(state, i, j, i, j - 1)) {
@@ -455,7 +447,7 @@ public class ChineseChecker {
         return moves;
     }
 
-    public ArrayList<State> getPossibleJumpMoves(State state, int i, int j, ArrayList<State> visitedMoves) {
+    private ArrayList<State> getPossibleJumpMoves(State state, int i, int j, ArrayList<State> visitedMoves) {
         ArrayList<State> moves = new ArrayList<>();
         visitedMoves.add(state);
         // jump moves
@@ -721,14 +713,14 @@ public class ChineseChecker {
     }
 
     private State alphabeta(int player, State state, int level, int depth, boolean isMax) {
-        
+
         if (depth == 0) {
-            utility(state, depth+1);
+            utility(state, depth + 1);
             return state;
         }
         ArrayList<State> possibleMoves = allMoves(player, state);
         if (possibleMoves.size() == 0)
-                utility(state, depth+1);
+            utility(state, depth + 1);
         for (State s : possibleMoves) {
             s.alpha = state.alpha;
             s.beta = state.beta;
@@ -765,7 +757,7 @@ public class ChineseChecker {
     private void printBoard(State state) {
         System.out.println("\t\t\t  a b c d e f g h i j k l m n o p q r s t u v w x y");
         for (int i = 0; i < 17; i++) {
-            System.out.print((char)(i + 97));
+            System.out.print((char) (i + 97));
             for (int j = 0; j < i; j++) {
                 System.out.print("  ");
             }
@@ -784,8 +776,22 @@ public class ChineseChecker {
         return (player + 1) % 2; // player 0 or 1
     }
 
-    private void startGame() {
+    public void startGame() {
         this.printBoard(currentState);
+        System.out.println(
+                "Welcome to chinese checker game! please choose the dificulty level\n 1-Easy\n 2-Medium\n 3-Hard");
+        Scanner sc = new Scanner(System.in);
+        int level = sc.nextInt();
+        if (level == 1) {
+            this.level = 1;
+        } else if (level == 2) {
+            this.level = 3;
+        } else if (level == 3) {
+            this.level = 5;
+        } else {
+            System.out.println("Invalid input");
+            this.startGame();
+        }
         System.out.println("you are now playing with marbles of colors Green, Blue and Purple");
         System.out.println(
                 "you can move your marbles by typing the coordinates of the marble you want to move and the coordinates of the place you want to move it to");
@@ -795,14 +801,14 @@ public class ChineseChecker {
     }
 
     private void computerTurn() {
-        State bestState = alphabeta(0, currentState, 3,3, true);
+        State bestState = alphabeta(0, currentState, level, level, true);
         currentState = bestState;
         printBoard(currentState);
     }
 
     private void play(int player) {
         if (player == 1) {
-            
+
             System.out.println("this is your turn");
             System.out.print("enter the row and column of the marble you want to move: ");
             Scanner sc = new Scanner(System.in);
@@ -811,7 +817,7 @@ public class ChineseChecker {
             System.out.print("enter the row and column of the Position you want to move to (Must be valid move!): ");
             char row2 = sc.next().charAt(0);
             char col2 = sc.next().charAt(0);
-            int [] from = new int[2], to = new int[2];
+            int[] from = new int[2], to = new int[2], toCheck = new int[2];
             try {
                 from = getCoordinates(row, col);
                 to = getCoordinates(row2, col2);
@@ -820,18 +826,16 @@ public class ChineseChecker {
                 play(player);
             }
             if (playerValidMove(currentState, from[0], from[1], to[0], to[1])) {
-                //add currentState to visited moves
-                ArrayList<State> visitedMoves = new ArrayList<State>();
-                visitedMoves.add(currentState);
-                //update the board
+                // update the board
                 currentState = move(currentState, from[0], from[1], to[0], to[1]);
                 printBoard(currentState);
-                //if it's a jump move, you can jump again
+                // if it's a jump move, you can jump again
                 if (Math.abs(from[0] - to[0]) == 2 || Math.abs(from[1] - to[1]) == 2) {
                     char jampChoice = 'y';
                     while (jampChoice != 'n') {
-                        //if there are possible jumps, you can jump again
-                        if (getPossibleJumpMoves(currentState, to[0], to[1], new ArrayList<State>(visitedMoves)).size() > 0) {
+                        // if there are possible jumps, you can jump again
+                        if (getPossibleJumpMoves(currentState, to[0], to[1], new ArrayList<State>())
+                                .size() > 0) {
                             System.out.println("you can jump again");
                             System.out.print("Do you want to jump again? (y/n): ");
                             jampChoice = sc.next().charAt(0);
@@ -839,25 +843,27 @@ public class ChineseChecker {
                                 System.out.print("enter the row and column of the marble you want to move: ");
                                 row = sc.next().charAt(0);
                                 col = sc.next().charAt(0);
-                                System.out.print("enter the row and column of the Position you want to move to (Must be valid move!): ");
+                                System.out.print(
+                                        "enter the row and column of the Position you want to move to (Must be valid move!): ");
                                 row2 = sc.next().charAt(0);
                                 col2 = sc.next().charAt(0);
                                 try {
                                     from = getCoordinates(row, col);
-                                    to = getCoordinates(row2, col2);
+                                    toCheck = getCoordinates(row2, col2);
                                 } catch (Exception e) {
                                     System.out.println(e.toString());
                                     continue;
                                 }
-                                if (playerValidMove(currentState, from[0], from[1], to[0], to[1])) {
-                                    //check if the move is a jump move
-                                    if (Math.abs(from[0] - to[0]) == 2 || Math.abs(from[1] - to[1]) == 2) {
-                                        //add currentState to visited moves
-                                        visitedMoves.add(currentState);
-                                        //update the board
+                                if (playerValidMove(currentState, from[0], from[1], toCheck[0], toCheck[1])) {
+                                    // check if the move is a jump move
+                                    if (Math.abs(from[0] - toCheck[0]) == 2 || Math.abs(from[1] - toCheck[1]) == 2) {
+                                        // add currentState to visited moves
+                                        // update the board
+                                        to[0] = toCheck[0];
+                                        to[1] = toCheck[1];
                                         currentState = move(currentState, from[0], from[1], to[0], to[1]);
                                         printBoard(currentState);
-                                        //check if the player has won
+                                        // check if the player has won
                                         if (isPlayerWinner()) {
                                             System.out.println("You won!");
                                             System.exit(0);
@@ -883,8 +889,8 @@ public class ChineseChecker {
 
                 }
                 if (isPlayerWinner()) {
-                System.out.println("You won!");
-                System.exit(0);
+                    System.out.println("You won!");
+                    System.exit(0);
                 }
                 play(nextPlayer(player));
             } else {
@@ -941,13 +947,7 @@ public class ChineseChecker {
         if (row % 2 != col % 2)
             throw new Exception("Invalid coordinates, try again");
         int i = row - 97;
-        int j = (col - 97)/2 + (6 - i/2);
-        return new int[] {i, j};
+        int j = (col - 97) / 2 + (6 - i / 2);
+        return new int[] { i, j };
     }
-
-    public static void main(String[] args) {
-        ChineseChecker chineseChecker = new ChineseChecker();
-        chineseChecker.startGame();
-    }
-
 }
