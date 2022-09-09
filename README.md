@@ -11,9 +11,9 @@ A project done as a team project for AI course in FCAI-CU. It's a game where you
 ### Notes
 
 - the heuristic that we use in the project is as follow:
-1- we calculate the distance between all marbles of player and the farest free space in his goal (playertotaldistance).
-2- we calculate the distance between all marbles of Computer and the farset free space in his goal (computertotaldistance).
-3- then the value of heuristic is palyertotaldistance - computertotaldistance , The higher the value, the better the state.
+	1- we calculate the distance between all marbles of player and the farest free space in his goal (playertotaldistance).
+	2- we calculate the distance between all marbles of Computer and the farset free space in his goal (computertotaldistance).
+	3- then the value of heuristic is palyertotaldistance - computertotaldistance , The higher the value, the better the state.
 
 the heuristic means that The farther the player is from his goal and the closer the computer is to his target, the better state is.
 
@@ -40,7 +40,7 @@ p p p p * * * * * o o o o - - - -
 
 
 ### How to run
-1-choose the difficulty of the game
-2-start to enter the index of row and column of the marble that you need to move from.
-3-enter the index of row and column of the space that you need to move to (valid space).
+1- choose the difficulty of the game
+2- start to enter the index of row and column of the marble that you need to move from.
+3- enter the index of row and column of the space that you need to move to (valid space).
 
