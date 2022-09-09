@@ -20,23 +20,23 @@ the heuristic means that The farther the player is from his goal and the closer 
 
 - we are using this representaion for the board:-
 
-- - - - - - - - - - - - g - - - -
-- - - - - - - - - - - g g - - - -
-- - - - - - - - - - g g g - - - -
-- - - - - - - - - g g g g - - - -
-- - - - b b b b * * * * * y y y y
-- - - - b b b * * * * * * y y y -
-- - - - b b * * * * * * * y y - -
-- - - - b * * * * * * * * y - - -
-- - - - * * * * * * * * * - - - -
-- - - p * * * * * * * * o - - - -
-- - p p * * * * * * * o o - - - -
-- p p p * * * * * * o o o - - - -
+\- - - - - - - - - - - - g - - - -
+\- - - - - - - - - - - g g - - - -
+\- - - - - - - - - - g g g - - - -
+\- - - - - - - - - g g g g - - - -
+\- - - - b b b b * * * * * y y y y
+\- - - - b b b * * * * * * y y y -
+\- - - - b b * * * * * * * y y - -
+\- - - - b * * * * * * * * y - - -
+\- - - - * * * * * * * * * - - - -
+\- - - p * * * * * * * * o - - - -
+\- - p p * * * * * * * o o - - - -
+\- p p p * * * * * * o o o - - - -
 p p p p * * * * * o o o o - - - -
-- - - - r r r r - - - - - - - - -
-- - - - r r r - - - - - - - - - -
-- - - - r r - - - - - - - - - - -
-- - - - r - - - - - - - - - - - -
+\- - - - r r r r - - - - - - - - -
+\- - - - r r r - - - - - - - - - -
+\- - - - r r - - - - - - - - - - -
+\- - - - r - - - - - - - - - - - -
 
 
 ### How to run
