@@ -5,6 +5,20 @@
     "version": "0.2.0",
     "configurations": [
         {
+            "type": "java",
+            "name": "Launch main",
+            "request": "launch",
+            "mainClass": "main",
+            "projectName": "Chinese-Checker-Game-AI_f92f7719"
+        },
+        {
+            "type": "java",
+            "name": "Launch GUI",
+            "request": "launch",
+            "mainClass": "GUI",
+            "projectName": "Chinese-Checker-Game-AI_f92f7719"
+        },
+        {
             "name": "Java",
             "type": "java",
             "request": "launch",

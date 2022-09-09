@@ -557,6 +557,21 @@ public class ChineseChecker {
         return newState;
     }
 
+    public void move (int from, int to){
+        //TODO map from,to to x,y
+        //TODO calls move fun with parameters
+    }
+
+    private int[] mapGUIidx(int idx){
+        //TODO loop
+        return new int[] {i,j};
+    }
+
+    private int[] getComputerMove(State bestState){
+        //TODO compare cur state to bestState
+        return new int[] {i1,j1,i2,j2};
+    }
+
     private void utility(State state, int depth) {
         int playerTotalDistance = playerTotalDistance(state);
         int computerTotalDistance = computerTotalDistance(state);
@@ -800,10 +815,11 @@ public class ChineseChecker {
 
     }
 
-    private void computerTurn() {
+    public int[] computerTurn() {
         State bestState = alphabeta(0, currentState, level, level, true);
+        int[] computerMove = getComputerMove(bestState);
         currentState = bestState;
-        printBoard(currentState);
+        return computerMove;
     }
 
     private void play(int player) {
@@ -901,6 +917,7 @@ public class ChineseChecker {
             System.out.println("Computer's turn");
             System.out.println("Computer is thinking");
             computerTurn();
+            printBoard(currentState);
             if (isComputerWinner()) {
                 System.out.println("Computer won!");
                 System.exit(0);
