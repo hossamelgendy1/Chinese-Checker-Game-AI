@@ -1,4 +1,5 @@
 import java.util.*;
+import java.util.concurrent.TimeUnit;
 import java.net.URL;
 import java.awt.Component;
 import java.awt.EventQueue;
@@ -936,6 +937,7 @@ public class GUI extends JFrame {
 			if (currPlayer == 3){ //the previous move was from human
 				//tell chinese checker to move the marble of the human
 				computerAI.move(startIdx, endIdx);
+				startIdx = -1;
 				//give the turn to computer
 				computerMove = computerAI.computerTurn();
 				//switch turn
@@ -986,10 +988,10 @@ public class GUI extends JFrame {
 
 		 	private JLabel start;
 		 	private JLabel end;
-		 	private JLabel jumping;
 		 	private JLabel firstMoved;
 
 		 	private boolean hasJumped = false;
+			private boolean hasMoved = false;
 
 	        // MOUSE PRESSED ON PIECE TO MOVE
 	        public void mousePressed( MouseEvent event ) {
@@ -1021,7 +1023,7 @@ public class GUI extends JFrame {
 
 	        	if (event.getSource() == endTurn) {
 					hasJumped = false;
-        			jumping = null;
+					hasMoved = false;
         			firstMoved = null;
 					endTurn.setVisible(false);
 	        		turnOver();
@@ -1038,6 +1040,7 @@ public class GUI extends JFrame {
 		        	if (isDot(end)) {
 		        		end.setIcon(getMarble(start));
 		        		moveMade = true;
+						hasMoved = true;
 		        		if (!inRange(start,end)) {
 		        			hasJumped = true;
 		        		}
@@ -1049,11 +1052,13 @@ public class GUI extends JFrame {
 
 	        	hideMoves(start);	        	
 
+				if(!hasMoved){
+					startIdx = -1;
+				}
 	        	// MOVE if labels are not the same, 
 	        	// is blankspace and move is in range
 	        	if (!moveMade) { // IF NO MOVE MADE RESET START TO ORIGINAL
 	        		start.setIcon(getImageIcon(getColorInt(start), 'o'));
-					startIdx = -1;
 	        	} else { // ELSE SET START TO BLANK
 	        		// if jump still available 
 	        		if (canJumpAgain(end) && hasJumped) {
@@ -1063,12 +1068,10 @@ public class GUI extends JFrame {
 						endTurn.setVisible(true);
 
 	        			start = end;
-	        			jumping = start;
 	        			end = null;
-
 	        		} else {
 	        			hasJumped = false;
-	        			jumping = null;
+						hasMoved = false;
 	        			firstMoved = null;
 		        		start.setIcon(o_blank); // blank image
 						endTurn.setVisible(false);
