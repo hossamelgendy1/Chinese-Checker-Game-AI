@@ -7,6 +7,25 @@ public class ChineseChecker {
     private State startState;
     private int level;
 
+    private int[][] dashesIn2dBoard = { {12,4},
+                                        {11,4},
+                                        {10,4},
+                                        {9,4},
+                                        {4,0},
+                                        {4,1},
+                                        {4,2},
+                                        {4,3},
+                                        {4,4},
+                                        {3,4},
+                                        {2,4},
+                                        {1,4},
+                                        {0,4},
+                                        {4,9},
+                                        {4,10},
+                                        {4,11},
+                                        {4,12},
+                                    };
+
     public ChineseChecker() {
         currentState = new State();
         currentState.board = new Character[17][17];
@@ -79,6 +98,14 @@ public class ChineseChecker {
             }
             redEnd--;
         }
+    }
+
+    public int[][] getDashesIn2dBoard() {
+        return dashesIn2dBoard;
+    }
+
+    public void setLevel(int level) {
+        this.level = level;
     }
 
     private ArrayList<State> allMoves(int player, State state) {
@@ -558,17 +585,39 @@ public class ChineseChecker {
     }
 
     public void move (int from, int to){
-        //TODO map from,to to x,y
-        //TODO calls move fun with parameters
+        int[] fromMapping = mapGUIidx(from), toMapping = mapGUIidx(to);
+        currentState = move(currentState, fromMapping[0], fromMapping[1], toMapping[0], toMapping[1]);
     }
 
     private int[] mapGUIidx(int idx){
-        //TODO loop
-        return new int[] {i,j};
+        for (int i = 0; i < 17; i++) {
+            for (int j = 0; j < 17; j++) {
+                if (startState.board[i][j] != '-'){
+                    if(idx == 0)
+                        return new int[] {i,j};
+                    else 
+                        idx--;
+                }
+
+            }
+        }
+        return new int[] {-1,-1};
     }
 
     private int[] getComputerMove(State bestState){
-        //TODO compare cur state to bestState
+        int i1 = -1, j1 = -1, i2 = -1, j2 = -1;
+        for (int i = 0; i < 17; i++) {
+            for (int j = 0; j < 17; j++) {
+                if(currentState.board[i][j] != '*' && bestState.board[i][j] == '*'){
+                    i1 = i;
+                    j1 = j;
+                }
+                if(currentState.board[i][j] == '*' && bestState.board[i][j] != '*'){
+                    i2 = i;
+                    j2 = j;
+                }
+            }
+        }
         return new int[] {i1,j1,i2,j2};
     }
 

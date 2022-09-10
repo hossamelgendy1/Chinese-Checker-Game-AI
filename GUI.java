@@ -86,6 +86,7 @@ public class GUI extends JFrame {
     	private int winner;
 
 		private int startIdx = -1, endIdx = -1;
+		private int[] computerMove;
 		private ChineseChecker computerAI;
     	
     	//////////////////////////////////////////////////////////////////////
@@ -640,8 +641,7 @@ public class GUI extends JFrame {
 	    //////////////////////////////////////////////////////////////////////
 	    // returns true if currPlayer matches JLabel
 	    public boolean isTurn(JLabel s) {
-	    	if ((getColorInt(s) >= 0 && getColorInt(s) <= 2 && currPlayer == 0)
-				|| (getColorInt(s) >= 3 && getColorInt(s) <= 5 && currPlayer == 3))
+	    	if (getColorInt(s) >= 0 && getColorInt(s) <= 2 && currPlayer == 0)
 	    		return true;
 	    	return false;
 	    } // end of isTurn
@@ -666,7 +666,7 @@ public class GUI extends JFrame {
 
 	    //////////////////////////////////////////////////////////////////////
 	    // returns true if all pieces of a are in the original spots of b
-	    public boolean isGameOver(int a, int b){
+	    public boolean isGameOver(int a, int b){  //TODO: need modification for all colors
 	    	int count = 0;
 
 	    	for (int i = 0; i < gb.length; i++) {
@@ -906,25 +906,56 @@ public class GUI extends JFrame {
 			currPlayer = nextTurn.get(currPlayer);
 	  		updatePlayer(currPlayer);
 
-			if (currPlayer == 3){
-				//tell chinese checker to move the marble
-				computerAI.move(startIdx, endIdx);
-				//check gameOver
-
-				//computer turn
-				//get computer move
-				//update gui board with com move
-				//switch turn
+			if (currPlayer == 0) {//the previous move was from computer
+				//map the chinese checker board indecies to GUI board idx
+				int computerStart = map2dBoardIdx(computerMove[0],computerMove[1]);
+				int computerEnd = map2dBoardIdx(computerMove[2], computerMove[3]);
+				//make the computer's move in GUI
+				moveMarble(computerStart,computerEnd);
 			}
 
-        	if(isGameOver(currPlayer, nextTurn.get(currPlayer))) {
+        	if(isGameOver(currPlayer, nextTurn.get(currPlayer))) {//TODO move to begining of fun
         		winner = currPlayer;
         		initGame();
         		showOptions();
-        		System.out.printf("Player %d Wins!!!\n", winner);
+				if (winner == 0){
+        			System.out.println("You Win!");
+					gameStatus1.setText("You");
+					gameStatus1.setForeground(Color.GREEN);
+					gameStatus2.setText("win!");
+				}
+				else{
+					System.out.println("Computer wins!");
+					gameStatus1.setText("Computer");
+					gameStatus1.setForeground(Color.RED);
+					gameStatus2.setText("wins!");
+				}
         		gameOver = true;
-        	}	  		
+        	}	  
+			
+			if (currPlayer == 3){ //the previous move was from human
+				//tell chinese checker to move the marble of the human
+				computerAI.move(startIdx, endIdx);
+				//give the turn to computer
+				computerMove = computerAI.computerTurn();
+				//switch turn
+				turnOver();
+			}
 	  	} // end of turnOver
+
+		private void moveMarble(int fromIdx, int toIdx) {
+			gb[toIdx].setIcon(getImageIcon(getColorInt(gb[fromIdx]),'o'));
+			gb[fromIdx].setIcon(o_blank);
+		}
+
+		private int map2dBoardIdx(int i, int j) {
+			int idx = 17 * i + j;
+			for (int row = 0; row < i; row++) {
+				idx -= computerAI.getDashesIn2dBoard()[row][0] + computerAI.getDashesIn2dBoard()[row][1];
+			}
+			idx -= computerAI.getDashesIn2dBoard()[i][0];
+			return idx;
+		}
 
 		public int getIndexOf(JLabel p){
 			for (int i = 0; i < gb.length; i++) {
@@ -1079,18 +1110,21 @@ public class GUI extends JFrame {
 			public void mousePressed(MouseEvent e) {
 				if (e.getSource() == modes[0]) {
 					gameMode = 0;
+					computerAI.setLevel(1);
 					setTurnOrder(gameMode);
 					gameStarted = true;
 					hideOptions();
 				}
 				if (e.getSource() == modes[1]) {
 					gameMode = 1;
+					computerAI.setLevel(3);
 					setTurnOrder(gameMode);
 					gameStarted = true;
 					hideOptions();
 				}
 				if (e.getSource() == modes[2]) {
 					gameMode = 2;
+					computerAI.setLevel(5);
 					setTurnOrder(gameMode);
 					gameStarted = true;
 					hideOptions();
