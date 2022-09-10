@@ -22,6 +22,8 @@ import java.awt.event.MouseEvent;
 // GUI class
 public class GUI extends JFrame {
     
+	private JFrame frame;
+	private Board board;
 	//////////////////////////////////////////////////////////////////////////
 	// main
     public static void main(String[] args) {
@@ -34,10 +36,11 @@ public class GUI extends JFrame {
         EventQueue.invokeLater(new Runnable() {
             @Override
             public void run() {
-                JFrame frame = new JFrame("Chinese Checkers");
+				board = new Board();
+                frame = new JFrame("Chinese Checkers");
                 frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
                 frame.setLayout(new BorderLayout());
-                frame.add(new Board());
+                frame.add(board);
                 frame.pack();
                 frame.setLocationRelativeTo(null);
                 frame.setVisible(true);
@@ -45,6 +48,14 @@ public class GUI extends JFrame {
             }
         });
     } // end of GUI constructor
+
+	public void resetBoard(){
+		frame.remove(board);
+		board = new Board();
+		frame.add(board);
+		frame.pack();
+		frame.setLocationRelativeTo(null);
+	}
 
     //////////////////////////////////////////////////////////////////////////
     // Board class
@@ -1030,12 +1041,7 @@ public class GUI extends JFrame {
 						gameStatus1.setVisible(false);
 						gameStatus2.setVisible(false);
 						gameStatus2.setText("Turn");
-						gb = new JLabel[121];
-						modeLabels = new JLabel[4];
-						boardLayout = new SpringLayout();
-	        			setLayout(boardLayout);
-						initGame();
-        				showOptions();
+						resetBoard();
 					}
 				}
 
