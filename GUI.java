@@ -1041,6 +1041,8 @@ public class GUI extends JFrame {
 					else {
 						endTurn.setVisible(false);
 						endTurn.setText("end turn");
+						gameStatus1.setVisible(false);
+						gameStatus2.setVisible(false);
 						gameStatus2.setText("Turn");
 						initGame();
         				showOptions();
@@ -1101,21 +1103,28 @@ public class GUI extends JFrame {
 	        // SETS THE END POINT 
 	        public void mouseEntered( MouseEvent event ) {
 	        	if (event.getSource() != endTurn) {
-	        		end = (JLabel) event.getSource();
-
-		        	if (isHighlight((JLabel) event.getSource())) {
-		        		end = (JLabel) event.getSource();
-		        		end.setIcon(getImageIcon(currPlayer, 'd'));
-		        	}
+					try {
+						end = (JLabel) event.getSource();
+						if (isHighlight((JLabel) event.getSource())) {
+							end = (JLabel) event.getSource();
+							end.setIcon(getImageIcon(currPlayer, 'd'));
+						}
+					} catch (Exception e) {
+						
+					}
 		        }		
 	        } 
 
 	        // handle event when mouse exits area
 	        public void mouseExited( MouseEvent event ) {
 	        	if (event.getSource() != endTurn) {
-		        	JLabel tmp = (JLabel) event.getSource();
-		        	if (isDot(tmp))
-		        		end.setIcon(getImageIcon(currPlayer, 'h'));
+					try {
+						JLabel tmp = (JLabel) event.getSource();
+						if (isDot(tmp))
+							end.setIcon(getImageIcon(currPlayer, 'h'));
+					} catch (Exception e) {
+						// TODO: handle exception
+					}
 		        }
 	        } 
 	        
