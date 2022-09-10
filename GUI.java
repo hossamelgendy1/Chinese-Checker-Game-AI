@@ -666,20 +666,6 @@ public class GUI extends JFrame {
 	    } // end of compIsMarble
 
 	    //////////////////////////////////////////////////////////////////////
-	    // returns true if all pieces of a are in the original spots of b
-	    public boolean isGameOver(int a, int b){  //TODO: need modification for all colors
-	    	int count = 0;
-
-	    	for (int i = 0; i < gb.length; i++) {
-	    		if (pieceType(i) == getImageIcon(b,'o'))
-	    			if (gb[i].getIcon() == getImageIcon(a,'o'))
-	    				count++;
-	    	}
-
-	    	if (count == 10) 
-	    		return true;
-	    	return false;	    		
-	    } // end of isGameOver
 
  		//////////////////////////////////////////////////////////////////////
 	    // returns true if e is 1 move distance from s
@@ -1044,6 +1030,10 @@ public class GUI extends JFrame {
 						gameStatus1.setVisible(false);
 						gameStatus2.setVisible(false);
 						gameStatus2.setText("Turn");
+						gb = new JLabel[121];
+						modeLabels = new JLabel[4];
+						boardLayout = new SpringLayout();
+	        			setLayout(boardLayout);
 						initGame();
         				showOptions();
 					}
