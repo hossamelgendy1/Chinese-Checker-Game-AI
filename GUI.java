@@ -913,30 +913,20 @@ public class GUI extends JFrame {
 				int computerEnd = map2dBoardIdx(computerMove[2], computerMove[3]);
 				//make the computer's move in GUI
 				moveMarble(computerStart,computerEnd);
-			}
-
-        	if(isGameOver(currPlayer, nextTurn.get(currPlayer))) {//TODO move to begining of fun
-        		winner = currPlayer;
-        		initGame();
-        		showOptions();
-				if (winner == 0){
-        			System.out.println("You Win!");
-					gameStatus1.setText("You");
-					gameStatus1.setForeground(Color.GREEN);
-					gameStatus2.setText("win!");
+				//check if computer has won 
+				if (computerAI.isComputerWinner()){
+					gameOver();
+					return;
 				}
-				else{
-					System.out.println("Computer wins!");
-					gameStatus1.setText("Computer");
-					gameStatus1.setForeground(Color.RED);
-					gameStatus2.setText("wins!");
-				}
-        		gameOver = true;
-        	}	  
+			}  
 			
 			if (currPlayer == 3){ //the previous move was from human
 				//tell chinese checker to move the marble of the human
 				computerAI.move(startIdx, endIdx);
+				if (computerAI.isPlayerWinner()){
+					gameOver();
+					return;
+				}
 				startIdx = -1;
 				//give the turn to computer
 				computerMove = computerAI.computerTurn();
@@ -944,6 +934,25 @@ public class GUI extends JFrame {
 				turnOver();
 			}
 	  	} // end of turnOver
+
+		private void gameOver(){
+			gameOver = true;
+			winner = currPlayer;
+			if (winner == 3){
+    			System.out.println("You Win!");
+				gameStatus1.setText("You");
+				gameStatus1.setForeground(Color.GREEN);
+				gameStatus2.setText("win!");
+			}
+			else{
+				System.out.println("Computer wins!");
+				gameStatus1.setText("Computer");
+				gameStatus1.setForeground(Color.RED);
+				gameStatus2.setText("wins!");
+			}
+			endTurn.setText("Restart");
+			endTurn.setVisible(true);
+		}
 
 		private void moveMarble(int fromIdx, int toIdx) {
 			gb[toIdx].setIcon(getImageIcon(getColorInt(gb[fromIdx]),'o'));
@@ -1022,11 +1031,20 @@ public class GUI extends JFrame {
 				}
 
 	        	if (event.getSource() == endTurn) {
-					hasJumped = false;
-					hasMoved = false;
-        			firstMoved = null;
-					endTurn.setVisible(false);
-	        		turnOver();
+					if (!gameOver){
+						hasJumped = false;
+						hasMoved = false;
+						firstMoved = null;
+						endTurn.setVisible(false);
+						turnOver();
+					}
+					else {
+						endTurn.setVisible(false);
+						endTurn.setText("end turn");
+						gameStatus2.setText("Turn");
+						initGame();
+        				showOptions();
+					}
 				}
 
 	        } 

@@ -975,7 +975,7 @@ public class ChineseChecker {
         }
     }
 
-    private boolean isPlayerWinner() {
+    public boolean isPlayerWinner() {
         int counter = 0;
         for (int i = 0; i < 17; i++) {
             for (int j = 0; j < 17; j++) {
@@ -992,7 +992,7 @@ public class ChineseChecker {
         return counter == 30;
     }
 
-    private boolean isComputerWinner() {
+    public boolean isComputerWinner() {
         int counter = 0;
         for (int i = 0; i < 17; i++) {
             for (int j = 0; j < 17; j++) {
