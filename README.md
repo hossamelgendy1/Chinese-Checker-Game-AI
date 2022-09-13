@@ -20,7 +20,16 @@ the heuristic means that The farther the player is from his goal and the closer 
 - we are using this [representaion](BoardRepresentation.txt) for the board.
 
 ### How to run
-1. choose the difficulty of the game
-2. start to enter the index of row and column of the marble that you need to move from.
-3. enter the index of row and column of the space that you need to move to (valid space).
+
+- as console application
+	1. download the source code.
+	2. run the main function in Main.java.
+	3. choose the difficulty of the game.
+	4. start to enter the index of row and column of the marble that you need to move from.
+	5. enter the index of row and column of the space that you need to move to (valid space).
+	
+- as GUI application
+	1. download the source code and run GUI.java, or download the [exe](https://drive.google.com/file/d/1nPvznpCFvvC3ML1VouywuZCHL7OnUeOh/view?usp=sharing) and run it.
+	2. choose the difficulty of the game.
+	3. start playing by moving your marbles with the mouse.
 
